@@ -1,5 +1,5 @@
 .home-page {
-    min-height: 100vh;
+    min-height: 200vh;
     background-color: #f8f8f8;
     font-family: "Cabin Sketch", sans-serif;
   }
@@ -8,7 +8,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh;
+    min-height: 200vh;
     padding: 20px;
     box-sizing: border-box;
   }
@@ -108,8 +108,11 @@
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.5s ease, transform 0.5s ease;
-    text-align: center;
-    padding: 40px 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
   
   .topics-container.visible {
@@ -117,44 +120,47 @@
     transform: translateY(0);
   }
   
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+  .fun-container {
+    background-color: #f0f0f0;
+    border: 3px solid #333;
+    border-radius: 15px;
+    height: 50vh;
+    width: 20vw;
+    padding: 30px;
+    box-shadow: 20px 15px 0 rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
   }
   
-  .topic-button {
-    background-color: #fff;
-    border: 2px solid #333;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 18px;
+  .topic-item {
+    margin-bottom: 15px;
+    font-size: 30px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: transform 0.3s ease;
   }
   
-  .topic-button:hover {
-    background-color: #333;
-    color: #fff;
-    transform: scale(1.05);
+  .topic-item:hover {
+    transform: translateX(10px);
   }
   
-  .coming-soon {
-    position: fixed;
-    top: 0;
+  .topic-text {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .topic-text::before {
+    content: attr(data-text);
+    position: absolute;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #f8f8f8;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    top: 0;
+    width: 0;
+    white-space: nowrap;
+    color: #ff6b6b;
+    overflow: hidden;
+    transition: width 0.3s ease;
   }
   
-  .bounce-text {
-    font-size: 36px;
-    font-weight: bold;
-    color: #333;
+  .topic-item:hover .topic-text::before {
+    width: 100%;
   }

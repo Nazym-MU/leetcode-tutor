@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ComingSoon from './ComingSoon';
 import '../styles/Home.css';
 
@@ -9,8 +9,10 @@ const Home = () => {
   const [topicsVisible, setTopicsVisible] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
 
+  const topicsRef = useRef(null);
+
   const topics = [
-    "Data Structures", "LeetCode 75", "Calculus", "Physics", "React", "Machine Learning", "SQL", "Algebra", "Python", "Swift", "LaTeX"
+    "Data Structures", "LeetCode 75", "Calculus", "Physics", "SQL", "LaTeX", "Swift", "React", "Web Dev"
   ];
 
   useEffect(() => {
@@ -19,7 +21,7 @@ const Home = () => {
     const arrowTimer = setTimeout(() => setArrowVisible(true), 1500);
 
     const handleScroll = () => {
-      if (window.scrollY > 100) {
+      if (window.scrollY > window.innerHeight / 2) {
         setTopicsVisible(true);
       }
     };
@@ -33,6 +35,15 @@ const Home = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (topicsVisible && topicsRef.current) {
+      const topicElements = topicsRef.current.querySelectorAll('.topic-text');
+      topicElements.forEach(element => {
+        element.setAttribute('data-text', element.textContent);
+      });
+    }
+  }, [topicsVisible]);
 
   return (
     <div className="home-page">
@@ -49,13 +60,15 @@ const Home = () => {
             </h2>
             <div className={`arrow ${arrowVisible ? 'visible' : ''}`}>↓</div>
           </div>
-          <div className={`topics-container ${topicsVisible ? 'visible' : ''}`}>
-            <div className="topics-grid">
-              {topics.map((topic, index) => (
-                <button key={index} className="topic-button" onClick={() => setShowComingSoon(true)}>
-                  {topic}
-                </button>
-              ))}
+          <div className={`topics-container ${topicsVisible ? 'visible' : ''}`} ref={topicsRef}>
+            <div className="fun-container">
+              <ul className="topics-list">
+                {topics.map((topic, index) => (
+                  <li key={index} className="topic-item" onClick={() => setShowComingSoon(true)}>
+                    <span className="topic-text">{topic}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </main>
