@@ -4,18 +4,17 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #ffffff;
     overflow: hidden;
   }
   
   .bounce-text {
+    position: absolute;
     font-size: 48px;
     font-weight: bold;
-    color: #fff;
-    position: absolute;
+    color: #000000;
     white-space: nowrap;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    user-select: none;
   }
