@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ComingSoon from './ComingSoon';
 import '../styles/Home.css';
 
@@ -8,12 +9,21 @@ const Home = () => {
   const [arrowVisible, setArrowVisible] = useState(false);
   const [topicsVisible, setTopicsVisible] = useState(false);
   const [showComingSoon, setShowComingSoon] = useState(false);
+  const navigate = useNavigate();
 
   const topicsRef = useRef(null);
 
   const topics = [
     "Data Structures", "LeetCode 75", "Calculus", "Physics", "SQL", "LaTeX", "Swift", "React", "Web Dev"
   ];
+
+  const handleTopicClick = (topic) => {
+    if (topic === "Data Structures") {
+      navigate('/data-structures');
+    } else {
+      setShowComingSoon(true);
+    }
+  };
 
   useEffect(() => {
     const titleTimer = setTimeout(() => setTitleVisible(true), 500);
@@ -64,7 +74,7 @@ const Home = () => {
             <div className="fun-container">
               <ul className="topics-list">
                 {topics.map((topic, index) => (
-                  <li key={index} className="topic-item" onClick={() => setShowComingSoon(true)}>
+                  <li key={index} className="topic-item" onClick={() => handleTopicClick(topic)}>
                     <span className="topic-text">{topic}</span>
                   </li>
                 ))}

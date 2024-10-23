@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Play, Plus, Minus, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
+import { Button } from '../../ui/button';
+import { Input } from '../../ui/input';
+import { Play, ArrowRight } from 'lucide-react';
 
 const HeapVisualizer = () => {
   const [heap, setHeap] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [newNumber, setNewNumber] = useState('');
   const [isMaxHeap, setIsMaxHeap] = useState(false);
   const [animatingIndices, setAnimatingIndices] = useState([]);
   const [message, setMessage] = useState('');
-  const [isHeapifying, setIsHeapifying] = useState(false);
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(-1);
 
-  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-  const getParentIndex = (index) => Math.floor((index - 1) / 2);
   const getLeftChildIndex = (index) => 2 * index + 1;
   const getRightChildIndex = (index) => 2 * index + 2;
 
