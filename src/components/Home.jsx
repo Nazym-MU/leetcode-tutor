@@ -14,7 +14,7 @@ const Home = () => {
   const topicsRef = useRef(null);
 
   const topics = [
-    "Data Structures", "LeetCode 75", "Calculus", "Physics", "SQL", "LaTeX", "Swift", "React", "Web Dev"
+    "Data Structures", "LeetCode 75", "Calculus", "Physics", "SQL", "LaTeX", "React"
   ];
 
   const handleTopicClick = (topic) => {

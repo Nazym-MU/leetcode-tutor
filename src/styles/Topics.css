@@ -1,0 +1,118 @@
+body {
+  background-color: #f8fafc;
+}
+
+.page-title {
+  font-family: 'Cabin Sketch', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #e5e7eb;
+  position: relative;
+}
+
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 100px;
+  height: 3px;
+  background-color: #3b82f6;
+}
+
+.search-container {
+  position: relative;
+  margin-bottom: 2.5rem;
+  max-width: 32rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.75rem;
+  font-family: 'Cabin Sketch', sans-serif;
+  font-size: 1.1rem;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.topic-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.topic-card:hover:not(.unavailable) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.topic-card.unavailable {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.topic-header {
+  padding: 1.5rem;
+}
+
+.topic-title {
+  font-family: 'Cabin Sketch', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+}
+
+.topic-description {
+  font-family: 'Cabin Sketch', sans-serif;
+  color: #4b5563;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .search-input {
+    font-size: 1rem;
+  }
+  
+  .topic-title {
+    font-size: 1.25rem;
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardHeader, CardTitle } from '../../ui/card';
 import { Search } from 'lucide-react';
+import '../../../styles/Topics.css';
 
 export const DataStructures = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,46 +27,44 @@ export const DataStructures = () => {
 
   return (
     <div className="min-h-screen bg-white p-6">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl mb-6 font-sketch">Data Structures</h1>
+      <div className="max-w-4xl mx-auto px-4">
+        <h1 className="page-title">Data Structures</h1>
         
-        <div className="relative mb-8">
+        <div className="search-container">
           <input
             type="text"
             placeholder="Search topics..."
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-2 pl-10 border rounded-lg font-sketch"
+            className="search-input"
           />
-          <Search className="absolute left-3 top-3 text-gray-400" size={20} />
+          <Search className="search-icon" size={20} />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredTopics.map((topic, index) => (
-            <Card 
-              key={index}
-              className={`transition-all hover:shadow-lg ${
-                topic.available ? 'cursor-pointer' : 'opacity-50'
-              }`}
-            >
+            <div key={index} className={`topic-card ${!topic.available ? 'unavailable' : ''}`}>
               {topic.available ? (
-                <Link to={topic.path}>
-                  <CardHeader>
-                    <CardTitle className="font-sketch">{topic.title}</CardTitle>
-                    <p className="text-gray-600 font-sketch">{topic.description}</p>
-                  </CardHeader>
+                <Link to={topic.path} className="block">
+                  <div className="topic-header">
+                    <h3 className="topic-title">{topic.title}</h3>
+                    <p className="topic-description">{topic.description}</p>
+                  </div>
                 </Link>
               ) : (
-                <CardHeader>
-                  <CardTitle className="font-sketch">
-                    {topic.title} <span className="text-sm">(Coming Soon)</span>
-                  </CardTitle>
-                  <p className="text-gray-600 font-sketch">{topic.description}</p>
-                </CardHeader>
+                <div className="topic-header">
+                  <h3 className="topic-title">
+                    {topic.title}
+                    <span className="coming-soon-badge">(Coming Soon)</span>
+                  </h3>
+                  <p className="topic-description">{topic.description}</p>
+                </div>
               )}
-            </Card>
+            </div>
           ))}
         </div>
       </div>
     </div>
   );
 };
+
+export default DataStructures;

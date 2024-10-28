@@ -4,6 +4,7 @@ import Home from './components/Home';
 import { DataStructures } from './components/explanations/data-structures/DataStructures';
 import HeapPage from './components/explanations/data-structures/Heap';
 import './styles/Template.css';
+import './App.css';
 
 const App = () => {
   return (
