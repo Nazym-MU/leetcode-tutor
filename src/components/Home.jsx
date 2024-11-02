@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ComingSoon from './ComingSoon';
 import '../styles/Home.css';
 
 const Home = () => {
@@ -8,7 +7,6 @@ const Home = () => {
   const [subtitleVisible, setSubtitleVisible] = useState(false);
   const [arrowVisible, setArrowVisible] = useState(false);
   const [topicsVisible, setTopicsVisible] = useState(false);
-  const [showComingSoon, setShowComingSoon] = useState(false);
   const navigate = useNavigate();
 
   const topicsRef = useRef(null);
@@ -20,8 +18,6 @@ const Home = () => {
   const handleTopicClick = (topic) => {
     if (topic === "Data Structures") {
       navigate('/data-structures');
-    } else {
-      setShowComingSoon(true);
     }
   };
 
@@ -57,32 +53,28 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      {showComingSoon ? (
-        <ComingSoon />
-      ) : (
-        <main className="content">
-          <div className="center-content">
-            <h1 className={`title ${titleVisible ? 'visible' : ''}`}>
-              Hi, I'm <a href="https://nazym.space" target="_blank" rel="noopener noreferrer" className="name-link">Nazym</a>!
-            </h1>
-            <h2 className={`subtitle ${subtitleVisible ? 'visible' : ''}`}>
-              Here's what I can explain:
-            </h2>
-            <div className={`arrow ${arrowVisible ? 'visible' : ''}`}>↓</div>
+      <main className="content">
+        <div className="center-content">
+          <h1 className={`title ${titleVisible ? 'visible' : ''}`}>
+            Hi, I'm <a href="https://nazym.space" target="_blank" rel="noopener noreferrer" className="name-link">Nazym</a>!
+          </h1>
+          <h2 className={`subtitle ${subtitleVisible ? 'visible' : ''}`}>
+            Here's what I can explain:
+          </h2>
+          <div className={`arrow ${arrowVisible ? 'visible' : ''}`}>↓</div>
+        </div>
+        <div className={`topics-container ${topicsVisible ? 'visible' : ''}`} ref={topicsRef}>
+          <div className="fun-container">
+            <ul className="topics-list">
+              {topics.map((topic, index) => (
+                <li key={index} className="topic-item" onClick={() => handleTopicClick(topic)}>
+                  <span className="topic-text">{topic}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className={`topics-container ${topicsVisible ? 'visible' : ''}`} ref={topicsRef}>
-            <div className="fun-container">
-              <ul className="topics-list">
-                {topics.map((topic, index) => (
-                  <li key={index} className="topic-item" onClick={() => handleTopicClick(topic)}>
-                    <span className="topic-text">{topic}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </main>
-      )}
+        </div>
+      </main>
     </div>
   );
 };

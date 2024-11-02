@@ -4,7 +4,7 @@ body {
 
 .page-title {
   font-family: 'Cabin Sketch', sans-serif;
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 2rem;
@@ -34,8 +34,8 @@ body {
   padding: 0.75rem 1rem 0.75rem 2.75rem;
   border: 2px solid #e5e7eb;
   border-radius: 0.75rem;
-  font-family: 'Cabin Sketch', sans-serif;
-  font-size: 1.1rem;
+  font-family: "Indie Flower", cursive;
+  font-size: 1.5rem;
   background-color: white;
   transition: all 0.2s ease;
 }
@@ -79,8 +79,8 @@ body {
 }
 
 .topic-title {
-  font-family: 'Cabin Sketch', sans-serif;
-  font-size: 1.5rem;
+  font-family: "Indie Flower", cursive;
+  font-size: 1.8rem;
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 0.5rem;
@@ -88,7 +88,7 @@ body {
 
 .coming-soon-badge {
   display: inline-block;
-  font-size: 0.875rem;
+  font-size: 1rem;
   color: #6b7280;
   margin-left: 0.5rem;
   padding: 0.25rem 0.5rem;
@@ -97,9 +97,9 @@ body {
 }
 
 .topic-description {
-  font-family: 'Cabin Sketch', sans-serif;
+  font-family: "Indie Flower", cursive;
   color: #4b5563;
-  font-size: 1rem;
+  font-size: 1.3rem;
   line-height: 1.5;
 }
 
