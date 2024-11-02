@@ -2,10 +2,13 @@
 
 .font-sketch {
   font-family: 'Cabin Sketch', sans-serif;
+  font-size: 1.25rem;
 }
 
 .font-indie {
   font-family: "Indie Flower", cursive;
+  font-size: 1.25rem;
+  line-height: 1.6;
 }
 
 .explanation-container {
@@ -16,10 +19,18 @@
 
 .section-header {
   font-family: 'Cabin Sketch', sans-serif;
-  font-size: 1.9rem;
+  font-size: 2rem;
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #e2e8f0;
+}
+
+/* All content sections now have the same text size */
+.overview-content,
+.visualization-content,
+.quiz-content {
+  font-size: 1.25rem;
+  line-height: 1.6;
 }
 
 .visualization-container {
@@ -29,15 +40,27 @@
   margin: 1rem 0;
 }
 
+.visualization-container .font-indie {
+  font-size: 1.25rem;
+}
+
+/* Background and content wrapper */
+.visualization-content-wrapper {
+  background-color: #f8fafc;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  min-height: 200px;
+}
+
 .subsection-title {
   font-family: 'Cabin Sketch', sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-bottom: 0.75rem;
 }
 
 .content-paragraph {
   font-family: "Indie Flower", cursive;
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   margin-bottom: 1rem;
   line-height: 1.6;
 }
@@ -49,8 +72,8 @@
 
 .list-item {
   font-family: "Indie Flower", cursive;
+  font-size: 1.25rem;
   margin: 0.5rem 0;
-  font-size: 1.3rem;
   position: relative;
 }
 
@@ -71,6 +94,7 @@
   border: 1px solid #e2e8f0;
   border-radius: 0.5rem;
   font-family: "Indie Flower", cursive;
+  font-size: 1.25rem;
 }
 
 .search-icon {

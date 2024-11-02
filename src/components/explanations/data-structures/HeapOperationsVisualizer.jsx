@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card';
 import { Button } from '../../ui/button';
 import { Input } from '../../ui/input';
-import { Play, ArrowRight } from 'lucide-react';
+import { Plus, Minus, ArrowRight } from 'lucide-react';
 
-const HeapVisualizer = () => {
+const HeapOperationsVisualizer = () => {
   const [heap, setHeap] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isMaxHeap, setIsMaxHeap] = useState(false);
@@ -13,6 +13,7 @@ const HeapVisualizer = () => {
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(-1);
 
+  const getParentIndex = (index) => Math.floor((index - 1) / 2);
   const getLeftChildIndex = (index) => 2 * index + 1;
   const getRightChildIndex = (index) => 2 * index + 2;
 
@@ -25,9 +26,9 @@ const HeapVisualizer = () => {
     const levelWidth = 800;
     const nodesInLevel = Math.pow(2, level);
     const position = index - Math.pow(2, level) + 1;
-    const horizontalSpacing = levelWidth / (nodesInLevel);
+    const horizontalSpacing = levelWidth / nodesInLevel;
     const x = (position + 0.5) * horizontalSpacing;
-    const y = level * 80 + 40;
+    const y = level * 100 + 40;
     return { x, y };
   };
 
@@ -75,68 +76,133 @@ const HeapVisualizer = () => {
     }).flat();
   };
 
-  const generateHeapifySteps = (array) => {
+  const generateInsertSteps = (value) => {
     const steps = [];
-    const tempArray = [...array];
+    const tempArray = [...heap];
+    tempArray.push(value);
     
-    for (let i = Math.floor(array.length / 2) - 1; i >= 0; i--) {
-      let currentIndex = i;
+    steps.push({
+      array: [...tempArray],
+      highlighted: [tempArray.length - 1],
+      message: `Added ${value} to the end of the heap`
+    });
+
+    let currentIdx = tempArray.length - 1;
+    
+    while (currentIdx > 0) {
+      const parentIdx = getParentIndex(currentIdx);
       
-      while (true) {
-        let targetIndex = currentIndex;
-        const leftChild = getLeftChildIndex(currentIndex);
-        const rightChild = getRightChildIndex(currentIndex);
+      steps.push({
+        array: [...tempArray],
+        comparing: [currentIdx, parentIdx],
+        message: `Comparing ${tempArray[currentIdx]} with parent ${tempArray[parentIdx]}`
+      });
 
-        if (leftChild < tempArray.length && shouldSwap(tempArray[targetIndex], tempArray[leftChild])) {
-          targetIndex = leftChild;
-        }
-
-        if (rightChild < tempArray.length && shouldSwap(tempArray[targetIndex], tempArray[rightChild])) {
-          targetIndex = rightChild;
-        }
-
-        if (targetIndex !== currentIndex) {
-          steps.push({
-            array: [...tempArray],
-            comparing: [currentIndex, targetIndex],
-            message: `Comparing ${tempArray[currentIndex]} with ${tempArray[targetIndex]}`
-          });
-          
-          const temp = tempArray[currentIndex];
-          tempArray[currentIndex] = tempArray[targetIndex];
-          tempArray[targetIndex] = temp;
-          
-          steps.push({
-            array: [...tempArray],
-            swapped: [currentIndex, targetIndex],
-            message: `Swapped ${tempArray[currentIndex]} and ${tempArray[targetIndex]}`
-          });
-          
-          currentIndex = targetIndex;
-        } else {
-          break;
-        }
+      if (shouldSwap(tempArray[parentIdx], tempArray[currentIdx])) {
+        [tempArray[currentIdx], tempArray[parentIdx]] = [tempArray[parentIdx], tempArray[currentIdx]];
+        
+        steps.push({
+          array: [...tempArray],
+          swapped: [currentIdx, parentIdx],
+          message: `Swapped ${tempArray[currentIdx]} with ${tempArray[parentIdx]}`
+        });
+        
+        currentIdx = parentIdx;
+      } else {
+        break;
       }
     }
     
     return steps;
   };
 
-  const handleInitialInput = () => {
+  const generateDeleteSteps = () => {
+    if (heap.length === 0) return [];
+    
+    const steps = [];
+    const tempArray = [...heap];
+    
+    steps.push({
+      array: [...tempArray],
+      highlighted: [0],
+      message: `Removing root element ${tempArray[0]}`
+    });
+
+    // Replace root with last element
+    const lastElement = tempArray.pop();
+    if (tempArray.length > 0) {
+      tempArray[0] = lastElement;
+      
+      steps.push({
+        array: [...tempArray],
+        highlighted: [0],
+        message: `Replaced root with last element ${lastElement}`
+      });
+
+      let currentIdx = 0;
+      
+      while (true) {
+        let targetIdx = currentIdx;
+        const leftChildIdx = getLeftChildIndex(currentIdx);
+        const rightChildIdx = getRightChildIndex(currentIdx);
+
+        if (leftChildIdx < tempArray.length && shouldSwap(tempArray[targetIdx], tempArray[leftChildIdx])) {
+          targetIdx = leftChildIdx;
+        }
+
+        if (rightChildIdx < tempArray.length && shouldSwap(tempArray[targetIdx], tempArray[rightChildIdx])) {
+          targetIdx = rightChildIdx;
+        }
+
+        if (targetIdx === currentIdx) break;
+
+        steps.push({
+          array: [...tempArray],
+          comparing: [currentIdx, targetIdx],
+          message: `Comparing ${tempArray[currentIdx]} with child ${tempArray[targetIdx]}`
+        });
+
+        [tempArray[currentIdx], tempArray[targetIdx]] = [tempArray[targetIdx], tempArray[currentIdx]];
+        
+        steps.push({
+          array: [...tempArray],
+          swapped: [currentIdx, targetIdx],
+          message: `Swapped ${tempArray[currentIdx]} with ${tempArray[targetIdx]}`
+        });
+
+        currentIdx = targetIdx;
+      }
+    }
+    
+    return steps;
+  };
+
+  const handleInsert = () => {
     try {
-      const numbers = inputValue.split(',').map(num => parseInt(num.trim()));
-      if (numbers.some(isNaN)) {
-        setMessage('Please enter valid numbers separated by commas');
+      const value = parseInt(inputValue.trim());
+      if (isNaN(value)) {
+        setMessage('Please enter a valid number');
         return;
       }
-      setHeap(numbers);
-      const newSteps = generateHeapifySteps(numbers);
+      const newSteps = generateInsertSteps(value);
       setSteps(newSteps);
       setCurrentStep(-1);
-      setMessage('Click "Next Step" to start heapification');
+      setMessage('Click "Next Step" to start insertion');
+      setInputValue('');
     } catch (error) {
-      setMessage('Invalid input format');
+      setMessage('Invalid input');
     }
+  };
+
+  const handleDelete = () => {
+    if (heap.length === 0) {
+      setMessage('Heap is empty');
+      return;
+    }
+    const newSteps = generateDeleteSteps();
+    setSteps(newSteps);
+    setCurrentStep(-1);
+    setMessage('Click "Next Step" to start deletion');
   };
 
   const handleNextStep = () => {
@@ -144,16 +210,22 @@ const HeapVisualizer = () => {
       const nextStep = currentStep + 1;
       setCurrentStep(nextStep);
       setHeap(steps[nextStep].array);
-      setAnimatingIndices(steps[nextStep].comparing || steps[nextStep].swapped || []);
+      setAnimatingIndices(
+        steps[nextStep].comparing || 
+        steps[nextStep].swapped || 
+        steps[nextStep].highlighted || 
+        []
+      );
       setMessage(steps[nextStep].message);
     } else {
-      setMessage('Heapification complete!');
+      setMessage('Operation complete!');
       setAnimatingIndices([]);
     }
   };
 
   const getNodeColor = (index) => {
     if (animatingIndices.includes(index)) {
+      if (steps[currentStep]?.highlighted) return 'bg-purple-500';
       return animatingIndices.length === 2 && steps[currentStep]?.swapped ? 
         'bg-green-500' : 'bg-yellow-400';
     }
@@ -161,10 +233,10 @@ const HeapVisualizer = () => {
   };
 
   return (
-    <Card className="w-full max-w-4xl">
+    <Card className="w-full max-w-4xl mt-8">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span className="text-2xl">{isMaxHeap ? 'Max Heap' : 'Min Heap'} Visualizer</span>
+          <span className="text-2xl">Insert/Delete Operations</span>
           <Button 
             onClick={() => setIsMaxHeap(!isMaxHeap)}
             variant="outline"
@@ -180,15 +252,23 @@ const HeapVisualizer = () => {
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Enter numbers (comma-separated)"
+              placeholder="Enter a number to insert"
               className="flex-1 text-2xl p-6 font-indie"
             />
             <Button 
-              onClick={handleInitialInput}
+              onClick={handleInsert}
               className="text-xl px-8 py-6 font-indie"
             >
-              <Play className="w-5 h-5 mr-2" />
-              Initialize
+              <Plus className="w-5 h-5 mr-2" />
+              Insert
+            </Button>
+            <Button 
+              onClick={handleDelete}
+              className="text-xl px-8 py-6 font-indie"
+              variant="destructive"
+            >
+              <Minus className="w-5 h-5 mr-2" />
+              Delete Root
             </Button>
           </div>
 
@@ -212,6 +292,9 @@ const HeapVisualizer = () => {
             <div className="relative w-full h-full">
               {heap.map((value, index) => {
                 const position = calculateNodePosition(index);
+                if (index > 0 && (index % 2) === 1) {
+                  position.y += 10;
+                }
                 return (
                   <div
                     key={`${index}-${value}`}
@@ -233,4 +316,4 @@ const HeapVisualizer = () => {
   );
 };
 
-export default HeapVisualizer;
+export default HeapOperationsVisualizer;

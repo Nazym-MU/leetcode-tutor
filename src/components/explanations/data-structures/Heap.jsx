@@ -1,11 +1,12 @@
 import React from 'react';
 import { ExplanationTemplate } from '../../reusable/ExplanationTemplate';
 import HeapVisualizer from './HeapVisualizer';
+import HeapOperationsVisualizer from './HeapOperationsVisualizer';
 
 const Heap = () => {
   const heapContent = {
     topic: "Heap Data Structure",
-    description: "A Heap is a specialized tree-based data structure that satisfies the heap property. In a max heap, for any given node I, the value of I is greater than or equal to the values of its children. In a min heap, the value of I is less than or equal to the values of its children.",
+    description: "Heap is a tree-based data structure that satisfies the heap property - where each parent node is greater (in a max heap) or smaller (in a min heap) than its children. The key process is called 'heapify', which repeatedly compares a node with its children and swaps when necessary. Heaps are used in priority queues, operating system schedulers, and finding k largest/smallest elements in a dataset.",
     sections: [
       {
         title: "Types of Heaps",
@@ -23,10 +24,10 @@ const Heap = () => {
         title: "Time Complexity",
         content: (
           <ul className="list-container">
-            <li className="list-item">Build Heap: O(n)</li>
-            <li className="list-item">Insert: O(log n)</li>
-            <li className="list-item">Delete: O(log n)</li>
-            <li className="list-item">Get Min/Max: O(1)</li>
+            <li className="list-item">Build Heap: O(n) using Floyd's algorithm. It works by starting from the last non-leaf node and performing heapify operations up to the root. While each heapify operation could take log(n) steps, nodes closer to the leaves have fewer children to check, so bottom nodes finish quickly while only top nodes need full comparisons. This distribution of work - where half the nodes are leaves (0 steps), a quarter need 1 step, an eighth need 2 steps, and so on - adds up to O(n) rather than O(n*log n).</li>
+            <li className="list-item">Insert: O(log n) because as the new element may need to bubble up from the bottom to the top of the heap, traversing at most the height of the tree, which is log n for a binary heap.</li>
+            <li className="list-item">Delete from the root: O(log n) because after removing the root, the last element is moved to the top and may need to bubble down to its correct position, potentially traversing the entire height of the heap.</li>
+            <li className="list-item">Get Min/Max: O(1) because in a heap, this element is always at the root and can be accessed directly without any comparisons or traversals.</li>
           </ul>
         )
       }
@@ -35,6 +36,10 @@ const Heap = () => {
       {
         instructions: "Enter comma-separated numbers to build a heap:",
         content: <HeapVisualizer />
+      }, 
+      {
+        instructions: "Try inserting new values or deleting the root node:",
+        content: <HeapOperationsVisualizer />
       }
     ],
       quizQuestions: [
