@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# Interactive Data Structures & Algorithms Visualizer
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive educational platform designed to help students understand data structures and algorithms and other subjects through visual demonstrations and hands-on practice.
 
-## Available Scripts
+## 🎯 Project Overview
 
-In the project directory, you can run:
+This web application provides interactive visualizations for various concepts, for now with a focus on data structures and algorithms. Users can:
+- Navigate through different subjects and topics
+- Interact with live visualizations
+- Practice with hands-on examples
+- Test their knowledge through quizzes
 
-### `npm start`
+## 🏗 Project Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+```
+├── public/
+│   ├── index.html
+│   ├── manifest.json
+│   └── robots.txt
+└── src/
+    ├── components/
+    │   ├── explanations/
+    │   │   ├── data-structures/
+    │   │   │   ├── DataStructures.jsx
+    │   │   │   ├── Heap.jsx
+    │   │   │   ├── HeapOperationsVisualizer.jsx
+    │   │   │   └── HeapVisualizer.jsx
+    │   │   └── leetcode/
+    │   ├── reusable/
+    │   │   ├── ExplanationTemplate.jsx
+    │   │   └── Quiz.jsx
+    │   └── ui/
+    │       ├── button.jsx
+    │       ├── card.jsx
+    │       └── input.jsx
+    ├── styles/
+    │   ├── App.css
+    │   └── index.css
+    ├── App.js
+    ├── index.js
+    └── Home.jsx
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🚀 Features
 
-### `npm test`
+### 1. Interactive Topic Selection
+- Main page displays available subjects
+- Each subject contains multiple topics
+- Clean and intuitive navigation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 2. Educational Template
+Each topic follows a consistent layout including:
+- Clear overview and explanation
+- Interactive visualizations
+- Step-by-step demonstrations
+- Knowledge check quizzes
 
-### `npm run build`
+### 3. Visualization Components
+Custom-built visualizers for various concepts, including:
+- Data structure operations
+- Algorithm steps
+- Real-time updates
+- Color-coded states
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 4. Hands-on Practice
+- Interactive examples
+- Input-based demonstrations
+- Step-by-step walkthroughs
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 💻 Technology Stack
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- React.js for UI components
+- Tailwind CSS for styling
+- Custom visualization components
+- Interactive quiz system
 
-### `npm run eject`
+## 🎨 Design Philosophy
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The project emphasizes:
+- Clean, intuitive user interface
+- Consistent educational experience
+- Visual learning through interaction
+- Immediate feedback and practice opportunities
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 📚 Component Structure
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Reusable Components
+- `ExplanationTemplate.jsx`: Core template for all educational content
+- `Quiz.jsx`: Reusable quiz component for knowledge testing
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### UI Components
+- Custom button, card, and input components for consistent styling
 
-## Learn More
+### Topic-Specific Components
+- Specialized visualizers for different data structures and algorithms
+- Interactive demonstrations of concepts
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 🔧 Usage
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Navigate to [nazym.vercel.app](https://nazym-dev.vercel.app/)
 
-### Code Splitting
+## 📝 License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+MIT License - feel free to use and modify for your educational needs!
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Built with ❤️
