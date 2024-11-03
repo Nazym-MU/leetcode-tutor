@@ -17,7 +17,7 @@ export const DataStructures = () => {
       title: "Binary Search Tree",
       description: "Tree data structure with ordered nodes",
       path: "/data-structures/bst",
-      available: false
+      available: true
     }
   ];
 
