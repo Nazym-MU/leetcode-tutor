@@ -3,28 +3,16 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import '../../../styles/Topics.css';
 
-export const DataStructures = () => {
+export const Algorithms = () => {
   const [searchQuery, setSearchQuery] = useState("");
   
   const topics = [
     {
-      title: "Heap",
-      description: "Complete binary tree data structure with heap property",
-      path: "/data-structures/heap",
+      title: "Sorting",
+      description: "Algorithms for sorting arrays",
+      path: "/algorithms/Sorting",
       available: true
     },
-    {
-      title: "Binary Search Tree",
-      description: "Tree data structure with ordered nodes",
-      path: "/data-structures/bst",
-      available: true
-    },
-    {
-      title: "Stacks and Queues",
-      description: "Linear data structures with LIFO and FIFO properties",
-      path: "/data-structures/stacks-queues",
-      available: false
-    }
   ];
 
   const filteredTopics = topics.filter(topic => 
@@ -34,7 +22,7 @@ export const DataStructures = () => {
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="page-title">Data Structures</h1>
+        <h1 className="page-title">Algorithms</h1>
         
         <div className="search-container">
           <input
@@ -73,4 +61,4 @@ export const DataStructures = () => {
   );
 };
 
-export default DataStructures;
+export default Algorithms;

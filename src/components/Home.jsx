@@ -12,12 +12,15 @@ const Home = () => {
   const topicsRef = useRef(null);
 
   const topics = [
-    "Data Structures", "LeetCode", "Calculus", "Physics", "SQL", "LaTeX", "React"
+    "Data Structures", "Algorithms", "LeetCode", "Calculus", "Physics", "LaTeX", "React"
   ];
 
   const handleTopicClick = (topic) => {
     if (topic === "Data Structures") {
       navigate('/data-structures');
+    } else 
+    if (topic === "Algorithms") {
+      navigate('/algorithms');
     } else
     if (topic === "LeetCode") {
       navigate('/leetcode');
