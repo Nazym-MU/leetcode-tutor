@@ -140,15 +140,9 @@ const Sorting = () => {
     quizQuestions: [
       {
         question: "Which sorting algorithm has the best worst-case time complexity?",
-        options: ["QuickSort", "MergeSort", "HeapSort", "Bubble Sort"],
+        options: ["QuickSort", "MergeSort", "Selection Sort", "Bubble Sort"],
         correctAnswer: "MergeSort",
-        explanation: "MergeSort guarantees O(n log n) time complexity in all cases, while QuickSort can degrade to O(n²) in worst case."
-      },
-      {
-        question: "Which sorting algorithm is most efficient for nearly sorted data?",
-        options: ["Insertion Sort", "QuickSort", "MergeSort", "Selection Sort"],
-        correctAnswer: "Insertion Sort",
-        explanation: "Insertion Sort has O(n) time complexity for nearly sorted arrays and performs minimal operations in this case."
+        explanation: "MergeSort guarantees O(n log n) time complexity in all cases, while others can degrade to O(n²) in worst case."
       },
       {
         question: "Which sorting algorithms are stable?",
@@ -158,13 +152,13 @@ const Sorting = () => {
           "MergeSort, QuickSort, and Bubble Sort"
         ],
         correctAnswer: "Bubble Sort, Insertion Sort, and MergeSort",
-        explanation: "These algorithms maintain the relative order of equal elements, making them stable sorts."
+        explanation: "Bubble Sort, Insertion Sort, and MergeSort maintain the relative order of equal elements, making them stable sorts."
       },
       {
-        question: "Which sorting algorithm uses the least extra space?",
-        options: ["MergeSort", "HeapSort", "QuickSort", "Selection Sort"],
-        correctAnswer: "Selection Sort",
-        explanation: "Selection Sort uses O(1) extra space as it sorts in-place with only a few variables."
+        question: "Which sorting algorithm does not sort in-place?",
+        options: ["Selection Sort", "MergeSort", "Insertion Sort", "Selection Sort"],
+        correctAnswer: "MergeSort",
+        explanation: "Selection Sort uses O(n) extra space for temporarily storing the merged array."
       }
     ]
   };
