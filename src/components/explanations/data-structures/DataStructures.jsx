@@ -20,6 +20,12 @@ export const DataStructures = () => {
       available: true
     },
     {
+      title: "Red-Black Tree",
+      description: "Self-balancing binary search tree with color properties",
+      path: "/data-structures/rbt",
+      available: true
+    },
+    {
       title: "Stacks and Queues",
       description: "Linear data structures with LIFO and FIFO properties",
       path: "/data-structures/stacks-queues",

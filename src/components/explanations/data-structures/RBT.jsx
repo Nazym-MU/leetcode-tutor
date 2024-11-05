@@ -4,58 +4,122 @@ import RBTVisualizer from './RBTVisualizer';
 
 const RBT = () => {
   const rbtContent = {
-    topic: "Red-black Tree Data Structure",
-    description: "A Red-Black Tree (RBT) is a type of self-balancing binary search tree (BST) that maintains balance through a set of rules.",
+    topic: "Red-Black Tree Data Structure",
+    description: "Binary Search Trees are not always balanced, which might make the operations less efficient than in a balanced tree. So how to keep it balanced? Here's how -> A Red-Black Tree (RBT) is a self-balancing binary search tree where each node has an extra color property, either RED or BLACK, helping ensure the tree remains balanced during operations. It has main 5 properties that must be satisfied to maintain balance.",
     sections: [
       {
-        title: "Properties of RBT",
+        title: "Properties of Red-Black Trees",
         content: (
           <div>
-            <h3 className="subsection-title">1. Node Structure</h3>
-            <p className="content-paragraph">Each node contains a value and references to two child nodes (left and right).</p>
+            <h3 className="subsection-title">1. Node Colors</h3>
+            <p className="content-paragraph">Every node is either RED or BLACK</p>
             
-            <h3 className="subsection-title">2. Ordering Property</h3>
-            <p className="content-paragraph">For any node:</p>
-            <ul className="list-disc pl-6">
-              <li>All values in left subtree are less than the node's value.</li>
-              <li>All values in right subtree are greater than the node's value</li>
-            </ul>
+            <h3 className="subsection-title">2. Root Property</h3>
+            <p className="content-paragraph">The root must be BLACK</p>
             
-            <h3 className="subsection-title">3. Balance</h3>
-            <p className="content-paragraph">A BST can be balanced or unbalanced, affecting performance.</p>
+            <h3 className="subsection-title">3. Red Property</h3>
+            <p className="content-paragraph">RED nodes cannot have RED children (No two RED nodes can be adjacent)</p>
+            
+            <h3 className="subsection-title">4. Black Height Property</h3>
+            <p className="content-paragraph">Every path from root to NULL has the same number of BLACK nodes</p>
+            
+            <h3 className="subsection-title">5. Leaf Property</h3>
+            <p className="content-paragraph">All NULL leaves are considered BLACK</p>
           </div>
         )
       },
       {
         title: "Time Complexity",
         content: (
-          <ul className="list-container">
-            <li className="list-item">Search: O(log n) average case, O(n) worst case for highly unbalanced trees</li>
-            <li className="list-item">Insert: O(log n) average case, following a search path from root to leaf</li>
-            <li className="list-item">Delete: O(log n) average case, may require restructuring</li>
-            <li className="list-item">Traversal: O(n) to visit all nodes</li>
-            <li className="list-item">Space Complexity: O(n) for storage, O(h) for recursion stack where h is height</li>
-          </ul>
+          <div>
+            <p className="content-paragraph">Red-Black Trees guarantee O(log n) time complexity for basic operations:</p>
+            <ul className="list-disc pl-6">
+              <li className="list-item">Search: O(log n)</li>
+              <li className="list-item">Insert: O(log n)</li>
+              <li className="list-item">Delete: O(log n)</li>
+            </ul>
+            <p className="content-paragraph mt-4">The balanced nature of Red-Black Trees ensures these time complexities even in worst-case scenarios.</p>
+          </div>
+        )
+      },
+      {
+        title: "Balancing Operations",
+        content: (
+          <div>
+            <h3 className="subsection-title">1. Recoloring</h3>
+            <p className="content-paragraph">Changing the colors of nodes to maintain Red-Black properties</p>
+            
+            <h3 className="subsection-title">2. Rotations</h3>
+            <p className="content-paragraph">Two types of rotations are used:</p>
+            <ul className="list-disc pl-6">
+              <li>Left Rotation: Used when right subtree becomes heavier</li>
+              <li>Right Rotation: Used when left subtree becomes heavier</li>
+            </ul>
+            
+            <h3 className="subsection-title">3. Insert Fixes</h3>
+            <p className="content-paragraph">After insertion:</p>
+            <ul className="list-disc pl-6">
+              <li>New nodes are always inserted as RED</li>
+              <li>If parent is BLACK, no fixing needed</li>
+              <li>If parent is RED, apply recoloring and/or rotations</li>
+            </ul>
+          </div>
+        )
+      },
+      {
+        title: "Applications",
+        content: (
+          <div>
+            <p className="content-paragraph">Red-Black Trees are widely used in:</p>
+            <ul className="list-disc pl-6">
+              <li>Standard Template Library (STL) in C++</li>
+              <li>Java TreeMap and TreeSet implementations</li>
+              <li>Linux Kernel's Completely Fair Scheduler</li>
+              <li>Database indexing</li>
+              <li>File system implementations</li>
+            </ul>
+          </div>
         )
       }
     ],
     visualizations: [
       {
-        instructions: "Insert numbers one by one to build a red-black tree:",
+        title: "Red-Black Tree Visualization",
+        instructions: "Insert numbers to build a red-black tree. Watch how the tree maintains its balance through recoloring and rotations:",
         content: <RBTVisualizer />
       }
     ],
     quizQuestions: [
       {
-        question: "What distinguishes a RBT from a BDT?",
+        question: "What is the color of a newly inserted node in a Red-Black Tree?",
         options: [
-            "RBT has additional color property for each node",
-            "RBT has a fixed height",
-            "RBT has a unique root node"
-            ],
-        correctAnswer: "RBT has additional color property for each node",
-        explanation: "RBT nodes are colored red or black to maintain balance."
+          "RED",
+          "BLACK",
+          "Depends on the parent node"
+        ],
+        correctAnswer: "RED",
+        explanation: "New nodes are always colored RED because this minimizes violations of Red-Black properties."
       },
+      {
+        question: "Which property ensures the tree's balance?",
+        options: [
+          "All paths must have same number of RED nodes",
+          "All paths must have same number of BLACK nodes",
+          "All leaves must be RED nodes"
+        ],
+        correctAnswer: "All paths must have same number of BLACK nodes",
+        explanation: "The black-height property ensures that all paths from root to leaves have the same number of BLACK nodes, maintaining balance."
+      },
+      {
+        question: "What is the maximum possible height of a Red-Black Tree with n nodes?",
+        options: [
+          "2 log(n)",
+          "log(n)",
+          "2 log(n + 1)"
+        ],
+        correctAnswer: "2 log(n + 1)",
+        explanation: "The height is at most 2 log(n + 1) due to the balance properties enforced by node coloring."
+      }
     ]
   };
 

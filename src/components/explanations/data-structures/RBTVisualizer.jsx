@@ -10,244 +10,228 @@ const RBTVisualizer = () => {
   const [mode, setMode] = useState('insert');
   const [inputValue, setInputValue] = useState('');
   const [highlightedNodes, setHighlightedNodes] = useState([]);
-  const [comparisonNodes, setComparisonNodes] = useState([]);
+  const [rotatingNodes, setRotatingNodes] = useState([]);
   const [message, setMessage] = useState('');
   const [steps, setSteps] = useState([]);
   const [currentStepIndex, setCurrentStepIndex] = useState(-1);
   const [isAnimating, setIsAnimating] = useState(false);
 
+  const createNode = (value, color = 'RED') => ({
+    value,
+    color,
+    left: null,
+    right: null,
+    parent: null
+  });
+
   const deepCopyTree = (node) => {
     if (!node) return null;
-    return {
+    const newNode = {
       value: node.value,
-      left: deepCopyTree(node.left),
-      right: deepCopyTree(node.right)
+      color: node.color,
+      left: null,
+      right: null,
+      parent: null
     };
+    if (node.left) {
+      newNode.left = deepCopyTree(node.left);
+      newNode.left.parent = newNode;
+    }
+    if (node.right) {
+      newNode.right = deepCopyTree(node.right);
+      newNode.right.parent = newNode;
+    }
+    return newNode;
+  };
+
+  // RBT Helper Functions
+  const rotateLeft = (root, node) => {
+    const rightChild = node.right;
+    node.right = rightChild.left;
+    
+    if (rightChild.left) {
+      rightChild.left.parent = node;
+    }
+    
+    rightChild.parent = node.parent;
+    
+    if (!node.parent) {
+      root = rightChild;
+    } else if (node === node.parent.left) {
+      node.parent.left = rightChild;
+    } else {
+      node.parent.right = rightChild;
+    }
+    
+    rightChild.left = node;
+    node.parent = rightChild;
+    
+    return root;
+  };
+
+  const rotateRight = (root, node) => {
+    const leftChild = node.left;
+    node.left = leftChild.right;
+    
+    if (leftChild.right) {
+      leftChild.right.parent = node;
+    }
+    
+    leftChild.parent = node.parent;
+    
+    if (!node.parent) {
+      root = leftChild;
+    } else if (node === node.parent.right) {
+      node.parent.right = leftChild;
+    } else {
+      node.parent.left = leftChild;
+    }
+    
+    leftChild.right = node;
+    node.parent = leftChild;
+    
+    return root;
+  };
+
+  const fixInsertViolation = (root, node, steps) => {
+    let current = node;
+    
+    while (current !== root && current.parent.color === 'RED') {
+      if (current.parent === current.parent.parent.right) {
+        const uncle = current.parent.parent.left;
+        
+        if (uncle && uncle.color === 'RED') {
+          uncle.color = 'BLACK';
+          current.parent.color = 'BLACK';
+          current.parent.parent.color = 'RED';
+          steps.push({
+            tree: deepCopyTree(root),
+            highlighted: [uncle.value, current.parent.value, current.parent.parent.value],
+            message: 'Recoloring nodes to maintain Red-Black properties',
+            type: 'recolor'
+          });
+          current = current.parent.parent;
+        } else {
+          if (current === current.parent.left) {
+            current = current.parent;
+            steps.push({
+              tree: deepCopyTree(root),
+              rotating: [current.value],
+              message: 'Right rotation needed',
+              type: 'rotate'
+            });
+            root = rotateRight(root, current);
+          }
+          current.parent.color = 'BLACK';
+          current.parent.parent.color = 'RED';
+          steps.push({
+            tree: deepCopyTree(root),
+            highlighted: [current.parent.value, current.parent.parent.value],
+            message: 'Left rotation and recoloring',
+            type: 'recolor'
+          });
+          root = rotateLeft(root, current.parent.parent);
+        }
+      } else {
+        const uncle = current.parent.parent.right;
+        
+        if (uncle && uncle.color === 'RED') {
+          uncle.color = 'BLACK';
+          current.parent.color = 'BLACK';
+          current.parent.parent.color = 'RED';
+          steps.push({
+            tree: deepCopyTree(root),
+            highlighted: [uncle.value, current.parent.value, current.parent.parent.value],
+            message: 'Recoloring nodes to maintain Red-Black properties',
+            type: 'recolor'
+          });
+          current = current.parent.parent;
+        } else {
+          if (current === current.parent.right) {
+            current = current.parent;
+            steps.push({
+              tree: deepCopyTree(root),
+              rotating: [current.value],
+              message: 'Left rotation needed',
+              type: 'rotate'
+            });
+            root = rotateLeft(root, current);
+          }
+          current.parent.color = 'BLACK';
+          current.parent.parent.color = 'RED';
+          steps.push({
+            tree: deepCopyTree(root),
+            highlighted: [current.parent.value, current.parent.parent.value],
+            message: 'Right rotation and recoloring',
+            type: 'recolor'
+          });
+          root = rotateRight(root, current.parent.parent);
+        }
+      }
+    }
+    
+    root.color = 'BLACK';
+    return root;
   };
 
   const generateInsertSteps = (root, value) => {
     const steps = [];
     
-    const traverse = (node, path = []) => {
-      if (!node) {
-        steps.push({
-          tree: path.length ? deepCopyTree(root) : null,
-          highlighted: path,
-          message: `Found insertion point for ${value}`,
-          type: 'position'
-        });
-        return { value, left: null, right: null };
-      }
-
-      steps.push({
-        tree: deepCopyTree(root),
-        comparing: [node.value, value],
-        message: `Comparing ${value} with ${node.value}`,
-        type: 'comparison'
-      });
-
-      if (value < node.value) {
-        steps.push({
-          tree: deepCopyTree(root),
-          highlighted: [node.value],
-          message: `${value} is less than ${node.value}, going left`,
-          type: 'direction'
-        });
-        node.left = traverse(node.left, [...path, node.value]);
-      } else {
-        steps.push({
-          tree: deepCopyTree(root),
-          highlighted: [node.value],
-          message: `${value} is greater than or equal to ${node.value}, going right`,
-          type: 'direction'
-        });
-        node.right = traverse(node.right, [...path, node.value]);
-      }
-
-      return node;
-    };
-
     if (!root) {
+      const newNode = createNode(value, 'BLACK');
       steps.push({
-        tree: { value, left: null, right: null },
+        tree: newNode,
         highlighted: [value],
-        message: `Creating root node with value ${value}`,
+        message: `Creating root node with value ${value} (colored BLACK)`,
         type: 'insert'
       });
       return steps;
     }
-
-    const workingTree = deepCopyTree(root);
-    traverse(workingTree);
-    steps.push({
-      tree: workingTree,
-      highlighted: [value],
-      message: `Inserted ${value} into the tree`,
-      type: 'complete'
-    });
-
-    return steps;
-  };
-
-  const generateSearchSteps = (root, value) => {
-    const steps = [];
     
-    const traverse = (node) => {
-      if (!node) {
-        steps.push({
-          tree: root,
-          message: `Value ${value} not found in the tree`,
-          type: 'notfound'
-        });
-        return false;
-      }
-
+    let current = root;
+    const newNode = createNode(value);
+    let parent = null;
+    
+    while (current) {
+      parent = current;
       steps.push({
-        tree: root,
-        comparing: [node.value, value],
-        message: `Comparing ${value} with ${node.value}`,
+        tree: deepCopyTree(root),
+        highlighted: [current.value],
+        message: `Comparing ${value} with ${current.value}`,
         type: 'comparison'
       });
-
-      if (value === node.value) {
-        steps.push({
-          tree: root,
-          highlighted: [node.value],
-          message: `Found ${value}!`,
-          type: 'found'
-        });
-        return true;
-      }
-
-      if (value < node.value) {
-        steps.push({
-          tree: root,
-          highlighted: [node.value],
-          message: `${value} is less than ${node.value}, going left`,
-          type: 'direction'
-        });
-        return traverse(node.left);
-      }
-
-      steps.push({
-        tree: root,
-        highlighted: [node.value],
-        message: `${value} is greater than ${node.value}, going right`,
-        type: 'direction'
-      });
-      return traverse(node.right);
-    };
-
-    traverse(root);
-    return steps;
-  };
-
-  const generateDeleteSteps = (root, targetValue) => {
-    const steps = [];
-  
-    const findMin = (node) => {
-      let current = node;
-      let parent = node;
       
-      while (current.left) {
-        parent = current;
+      if (value < current.value) {
         current = current.left;
+      } else {
+        current = current.right;
       }
-      return { value: current.value, node: current, parent };
-    };
-  
-    const removeNode = (node, value) => {
-      if (!node) return null;
-  
-      if (node.value !== value) {
-        steps.push({
-          tree: deepCopyTree(root),
-          comparing: [node.value, value],
-          message: `Looking for ${value}`,
-          type: 'comparison'
-        });
-      }
-  
-      if (value < node.value) {
-        node.left = removeNode(node.left, value);
-      } 
-      else if (value > node.value) {
-        node.right = removeNode(node.right, value);
-      }
-      else {
-        // Node to delete found
-        steps.push({
-          tree: deepCopyTree(root),
-          highlighted: [node.value],
-          message: `Found node ${node.value} to delete`,
-          type: 'found'
-        });
-  
-        // Case 1: No children
-        if (!node.left && !node.right) {
-          steps.push({
-            tree: deepCopyTree(root),
-            highlighted: [node.value],
-            message: `Removing leaf node ${node.value}`,
-            type: 'delete'
-          });
-          return null;
-        }
-        
-        // Case 2: One child
-        if (!node.left) {
-          steps.push({
-            tree: deepCopyTree(root),
-            highlighted: [node.value, node.right.value],
-            message: `Replacing ${node.value} with its right child ${node.right.value}`,
-            type: 'replace'
-          });
-          return node.right;
-        }
-        
-        if (!node.right) {
-          steps.push({
-            tree: deepCopyTree(root),
-            highlighted: [node.value, node.left.value],
-            message: `Replacing ${node.value} with its left child ${node.left.value}`,
-            type: 'replace'
-          });
-          return node.left;
-        }
-  
-        // Case 3: Two children
-        const { value: successorValue } = findMin(node.right);
-        
-        steps.push({
-          tree: deepCopyTree(root),
-          highlighted: [successorValue],
-          message: `Found successor ${successorValue}, replacing ${node.value} and removing successor`,
-          type: 'successor'
-        });
-  
-        node.value = successorValue;
-        node.right = removeNode(node.right, successorValue);
-      }
-      return node;
-    };
-  
-    const workingTree = deepCopyTree(root);
-    const finalTree = removeNode(workingTree, targetValue);
-  
-    if (finalTree) {
-      steps.push({
-        tree: finalTree,
-        message: 'Deletion complete',
-        type: 'complete'
-      });
-    } else {
-      steps.push({
-        tree: null,
-        message: 'Tree is now empty',
-        type: 'complete'
-      });
     }
-  
+    
+    newNode.parent = parent;
+    
+    if (value < parent.value) {
+      parent.left = newNode;
+    } else {
+      parent.right = newNode;
+    }
+    
+    steps.push({
+      tree: deepCopyTree(root),
+      highlighted: [value],
+      message: `Inserted ${value} as RED node`,
+      type: 'insert'
+    });
+    
+    // Fix Red-Black tree violations
+    root = fixInsertViolation(root, newNode, steps);
+    
+    steps.push({
+      tree: deepCopyTree(root),
+      message: 'Red-Black tree properties restored',
+      type: 'complete'
+    });
+    
     return steps;
   };
 
@@ -259,25 +243,13 @@ const RBTVisualizer = () => {
     }
 
     let newSteps = [];
-    switch (mode) {
-      case 'insert':
-        newSteps = generateInsertSteps(tree, value);
-        break;
-      case 'delete':
-        newSteps = generateDeleteSteps(tree, value);
-        break;
-      case 'search':
-        newSteps = generateSearchSteps(tree, value);
-        break;
-      default:
-        setMessage('Please select an operation');
-        return;
+    if (mode === 'insert') {
+      newSteps = generateInsertSteps(tree, value);
+      setSteps(newSteps);
+      setCurrentStepIndex(-1);
+      setIsAnimating(true);
+      setInputValue('');
     }
-
-    setSteps(newSteps);
-    setCurrentStepIndex(-1);
-    setIsAnimating(true);
-    setInputValue('');
   };
 
   const handleNextStep = () => {
@@ -288,7 +260,7 @@ const RBTVisualizer = () => {
       setCurrentStepIndex(nextIndex);
       setTree(step.tree);
       setHighlightedNodes(step.highlighted || []);
-      setComparisonNodes(step.comparing || []);
+      setRotatingNodes(step.rotating || []);
       setMessage(step.message);
 
       if (nextIndex === steps.length - 1) {
@@ -304,6 +276,7 @@ const RBTVisualizer = () => {
       x: offset,
       y: level * 60 + 40,
       value: node.value,
+      color: node.color,
       left: node.left ? calculateNodePosition(node.left, level + 1, offset - spacing / (level + 1)) : null,
       right: node.right ? calculateNodePosition(node.right, level + 1, offset + spacing / (level + 1)) : null
     };
@@ -354,7 +327,7 @@ const RBTVisualizer = () => {
             cx={layout.x}
             cy={layout.y}
             r="20"
-            fill={getNodeColor(layout.value)}
+            fill={getNodeColor(layout.value, layout.color)}
             className="transition-colors duration-300"
           />
           <text
@@ -375,10 +348,10 @@ const RBTVisualizer = () => {
     return [...edges, ...nodes];
   };
 
-  const getNodeColor = (value) => {
-    if (comparisonNodes.includes(value)) return '#eab308';
+  const getNodeColor = (value, nodeColor) => {
+    if (rotatingNodes.includes(value)) return '#eab308';
     if (highlightedNodes.includes(value)) return '#22c55e';
-    return '#3b82f6';
+    return nodeColor === 'RED' ? '#ef4444' : '#1e293b';
   };
 
   const treeLayout = calculateNodePosition(tree);
@@ -387,15 +360,13 @@ const RBTVisualizer = () => {
     <Card className="w-full max-w-4xl">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span className="text-2xl">Binary Search Tree Visualizer</span>
+          <span className="text-2xl">Red-Black Tree Visualizer</span>
           <Select value={mode} onValueChange={setMode}>
             <SelectTrigger className="w-[200px]">
               <SelectValue value={mode} placeholder="Select Operation" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="insert">Insert Node</SelectItem>
-              <SelectItem value="delete">Delete Node</SelectItem>
-              <SelectItem value="search">Search Node</SelectItem>
             </SelectContent>
           </Select>
         </CardTitle>
@@ -406,7 +377,7 @@ const RBTVisualizer = () => {
             <Input
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder={`Enter a number to ${mode}`}
+              placeholder="Enter a number to insert"
               className="flex-1 text-xl p-4"
               disabled={isAnimating}
             />
@@ -415,7 +386,7 @@ const RBTVisualizer = () => {
               className="px-6 py-2"
               disabled={isAnimating}
             >
-              {mode === 'insert' ? 'Insert' : mode === 'delete' ? 'Delete' : 'Search'}
+              Insert
             </Button>
           </div>
 
