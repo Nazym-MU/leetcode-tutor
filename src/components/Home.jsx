@@ -24,6 +24,18 @@ const Home = () => {
     } else
     if (topic === "LeetCode") {
       navigate('/leetcode');
+    } else
+    if (topic === "Calculus") {
+      navigate('/calculus');
+    } else
+    if (topic === "Physics") {
+      navigate('/physics');
+    } else
+    if (topic === "LaTeX") {
+      navigate('/latex');
+    } else
+    if (topic === "React") {
+      navigate('/react');
     }
   };
 

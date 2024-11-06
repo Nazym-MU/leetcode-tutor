@@ -3,45 +3,27 @@ import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import '../../../styles/Topics.css';
 
-export const DataStructures = () => {
+export const ReactJS = () => {
   const [searchQuery, setSearchQuery] = useState("");
   
   const topics = [
     {
-      title: "Heap",
-      description: "Complete binary tree data structure with heap property",
-      path: "/data-structures/heap",
-      available: true
+        title: "Intro to React",
+        description: "Learn the basics of React",
+        path: "/react/intro-to-react",
+        available: false,
     },
     {
-      title: "Binary Search Tree",
-      description: "Tree data structure with ordered nodes",
-      path: "/data-structures/bst",
-      available: true
+        title: "React Components",
+        description: "Understand React components",
+        path: "/react/react-components",
+        available: false,
     },
     {
-      title: "Red-Black Tree",
-      description: "Self-balancing binary search tree with color properties",
-      path: "/data-structures/rbt",
-      available: true
-    },
-    {
-      title: "Stacks and Queues",
-      description: "Linear data structures with LIFO and FIFO properties",
-      path: "/data-structures/stacks-queues",
-      available: false
-    },
-    {
-      title: "Graphs",
-      description: "Non-linear data structure with vertices and edges",
-      path: "/data-structures/graphs",
-      available: false
-    },
-    {
-      title: "Trie",
-      description: "Tree data structure used for efficient string search",
-      path: "/data-structures/trie",
-      available: false
+        title: "React Hooks",
+        description: "Understand React hooks",
+        path: "/react/react-hooks",
+        available: false,
     }
   ];
 
@@ -52,7 +34,7 @@ export const DataStructures = () => {
   return (
     <div className="min-h-screen bg-white p-6">
       <div className="max-w-4xl mx-auto px-4">
-        <h1 className="page-title">Data Structures</h1>
+        <h1 className="page-title">React</h1>
         
         <div className="search-container">
           <input
@@ -91,4 +73,4 @@ export const DataStructures = () => {
   );
 };
 
-export default DataStructures;
+export default ReactJS;

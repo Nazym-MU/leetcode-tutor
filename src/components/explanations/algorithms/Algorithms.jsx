@@ -13,6 +13,42 @@ export const Algorithms = () => {
       path: "/algorithms/Sorting",
       available: true
     },
+    {
+      title: "Searching",
+      description: "Algorithms for searching elements",
+      path: "/algorithms/searching",
+      available: false
+    },
+    {
+      title: "Recursion",
+      description: "Algorithms using recursive functions",
+      path: "/algorithms/recursion",
+      available: false
+    },
+    {
+      title: "Dynamic Programming",
+      description: "Algorithms for optimization problems",
+      path: "/algorithms/dynamic-programming",
+      available: false
+    },
+    {
+      title: "Greedy Algorithms",
+      description: "Algorithms for optimization problems",
+      path: "/algorithms/greedy-algorithms",
+      available: false
+    },
+    {
+      title: "Backtracking",
+      description: "Algorithms for optimization problems",
+      path: "/algorithms/backtracking",
+      available: false
+    },
+    {
+      title: "Bit Manipulation",
+      description: "Algorithms for bitwise operations",
+      path: "/algorithms/bit-manipulation",
+      available: false
+    },
   ];
 
   const filteredTopics = topics.filter(topic => 

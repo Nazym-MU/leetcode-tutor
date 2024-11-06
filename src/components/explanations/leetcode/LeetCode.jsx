@@ -14,7 +14,7 @@ const LeetCode = () => {
       difficulty: "medium",
       topics: ["Array", "Hash Table", "Prefix Sum"],
       path: "/leetcode/1590",
-      available: true
+      available: false
     },
   ];
 

@@ -8,6 +8,7 @@ import RBT from './components/explanations/data-structures/RBT';
 import { Algorithms } from './components/explanations/algorithms/Algorithms';
 import Sorting from './components/explanations/algorithms/Sorting';
 import LeetCode from './components/explanations/leetcode/LeetCode';
+import { ReactJS } from './components/explanations/reactjs/ReactJS';
 import './styles/Template.css';
 import './App.css';
 
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/data-structures/rbt" element={<RBT />} />
         <Route path="/algorithms" element={<Algorithms />} />
         <Route path="/algorithms/sorting" element={<Sorting />} />
+        <Route path="/react" element={<ReactJS />} />
         <Route path="/leetcode" element={<LeetCode />} />
       </Routes>
     </Router>
