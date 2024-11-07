@@ -3,7 +3,7 @@ import { ExplanationTemplate } from '../../reusable/ExplanationTemplate';
 import SortingVisualizer from './SortingVisualizer';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../ui/table';
 
-const Sorting = () => {
+export const Sorting = () => {
   const sortingContent = {
     topic: "Sorting Algorithms",
     description: "Sorting algorithms are methods for organizing elements of a list in a certain sequence. Different algorithms have different trade-offs in terms of time complexity, space complexity, and stability.",
